@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: clinic-config
+  namespace: harbor-clinic
+data:
+  CLINIC_TIMEZONE: Asia/Kolkata
+  KAFKA_ENABLED: "true"
+  KAFKA_APPOINTMENT_TOPIC: appointment.booked
+  KAFKA_NOTIFICATION_GROUP: notification-service
+  KAFKA_CLIENT_ID: clinic-appointment-system
+  # Replace with the Managed Service for Apache Kafka bootstrap address.
+  KAFKA_BROKERS: kafka.example.internal:9092
+  CORS_ORIGIN: https://clinic.example.com
+  NODE_ENV: production

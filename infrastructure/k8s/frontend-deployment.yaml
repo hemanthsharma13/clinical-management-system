@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clinic-frontend
+  namespace: harbor-clinic
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: clinic-frontend
+  template:
+    metadata:
+      labels:
+        app: clinic-frontend
+    spec:
+      containers:
+        - name: web
+          image: REGION-docker.pkg.dev/PROJECT/clinic/frontend:REPLACE_TAG
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

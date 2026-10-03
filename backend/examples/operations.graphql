@@ -1,0 +1,72 @@
+# Example operations for the receptionist desk.
+# Sign in first, then send the access token as: Authorization: Bearer <token>
+
+mutation Login {
+  login(input: { email: "receptionist@harbor-clinic.test", password: "receptionist123" }) {
+    accessToken
+    user { email name role }
+  }
+}
+
+mutation RegisterPatient {
+  registerPatient(input: {
+    firstName: "Asha"
+    lastName: "Verma"
+    dateOfBirth: "1992-04-12"
+    email: "asha.verma@example.test"
+    phone: "9876543210"
+  }) {
+    patientId
+    name
+    email
+  }
+}
+
+query Patients {
+  patients(search: "Asha", page: 1, pageSize: 10) {
+    total
+    items { patientId name dateOfBirth email phone }
+  }
+}
+
+query Doctors {
+  doctors { doctorId name specialization }
+}
+
+query Availability {
+  doctorAvailability(doctorId: "D201", date: "2026-10-06") {
+    startTime
+    state
+  }
+}
+
+mutation Book {
+  bookAppointment(input: { patientId: "P101", doctorId: "D201", startTime: "2026-10-06T09:30" }) {
+    appointmentId
+    patientName
+    doctorName
+    startTime
+    status
+    outboxStatus
+  }
+}
+
+query Appointments {
+  appointments(page: 1, pageSize: 10) {
+    items { appointmentId patientName doctorName startTime status outboxStatus }
+  }
+}
+
+mutation Cancel {
+  cancelAppointment(appointmentId: "A1001") { appointmentId status }
+}
+
+query Notifications {
+  notifications(page: 1, pageSize: 10) {
+    items { message appointmentId status createdAt }
+  }
+}
+
+query StaffUsers {
+  staffUsers { email name role }
+}

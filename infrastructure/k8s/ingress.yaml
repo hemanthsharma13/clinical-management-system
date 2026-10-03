@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: clinic
+  namespace: harbor-clinic
+  annotations:
+    kubernetes.io/ingress.class: gce
+spec:
+  rules:
+    - host: clinic.example.com
+      http:
+        paths:
+          - path: /graphql
+            pathType: Prefix
+            backend:
+              service:
+                name: clinic-api
+                port:
+                  number: 3000
+          - path: /health
+            pathType: Prefix
+            backend:
+              service:
+                name: clinic-api
+                port:
+                  number: 3000
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: clinic-frontend
+                port:
+                  number: 80
